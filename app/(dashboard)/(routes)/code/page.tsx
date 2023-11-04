@@ -19,8 +19,10 @@ import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const CodePage = () => {
+    const proModal = useProModal()
     const router = useRouter();
     const [messages, setMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessageParam[]>([]);
 
@@ -50,7 +52,9 @@ const CodePage = () => {
 
             form.reset()
         } catch (error: any) {
-            console.log(error)
+            if(error?.response?.status === 403){
+                proModal.onOpen()
+            }
         } finally {
             router.refresh()
         }
@@ -62,8 +66,8 @@ const CodePage = () => {
                 title="Code Generation"
                 description="Generate code by describing what you desire."
                 icon={Code}
-                iconColor="text-green-700"
-                bgColor="bg-green-700/10"
+                iconColor="text-yellow-700"
+                bgColor="bg-yellow-700/20"
             />
             <div className="px-4 lg:px-8">
                 <div>
@@ -81,7 +85,7 @@ const CodePage = () => {
                                     lg:col-span-10">
                                         <FormControl className="m-0 p-0">
                                             <Input
-                                                className="border-0 outline-none
+                                                className="text-white border-0 outline-none
                                                 focus-visible:ring-0 focus-visible:ring-transparent"
                                                 disabled={isLoading}
                                                 placeholder="Generate a simple React button component"
@@ -101,7 +105,7 @@ const CodePage = () => {
                 <div className="space-y-4 mt-4">
                     {isLoading && (
                         <div className="rounded-lg w-full flex
-                        items-center justify-center bg-muted">
+                        items-center justify-center bg-[#595959]">
                             <Loader />
                         </div>
                     )}
@@ -115,21 +119,21 @@ const CodePage = () => {
                             <div 
                                 key={message.content}
                                 className={cn(
-                                    "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                                    message.role === "user" ? "bg-white border border-blak/10" : "bg-muted"
+                                    "text-white p-8 w-full flex items-start gap-x-8 rounded-lg",
+                                    message.role === "user" ? "bg-[#595959] border border-black/10" : "bg-[#595959]"
                                     )}
                             >
                                 {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
                                 <ReactMarkdown
                                     components={{
                                         pre: ({node, ...props}) => (
-                                            <div className="overflow-auto w-full
-                                            my-2 bg-black/10 p-2 rounded-lg">
+                                            <div className="overflow-auto w-full text-white
+                                            my-2 bg-black/30 p-2 rounded-lg">
                                                 <pre {...props}/>
                                             </div>
                                         ),
                                         code: ({node, ...props}) => (
-                                            <code className="bg-black/10 rounded-lg p-1"
+                                            <code className="bg-black/30 rounded-lg p-1 text-white"
                                             {...props}/>
                                         )
                                     }}

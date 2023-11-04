@@ -10,7 +10,7 @@ const tools = [
     label: "Coversation",
     icon: MessageSquare,
     color: "text-violet-500",
-    bgColor: "bg-violet-500/10",
+    bgColor: "bg-violet-500/20",
     href: "/conversation"
   },
   {
@@ -18,28 +18,28 @@ const tools = [
     icon: ImageIcon,
     href: "/image",
     color: "text-pink-700",
-    bgColor: "bg-pink-700/10"
+    bgColor: "bg-pink-700/20"
 },
 {
     label: "Video Generation",
     icon: Video,
     href: "/video",
     color: "text-orange-700",
-    bgColor: "bg-orange-700/10"
+    bgColor: "bg-orange-700/20"
 },
 {
     label: "Music Generation",
     icon: Music,
     href: "/music",
     color: "text-emerald-500",
-    bgColor: "bg-emerald-500/10"
+    bgColor: "bg-emerald-500/20"
 },
 {
     label: "Code Generation",
     icon: Code,
     href: "/code",
-    color: "text-green-700",
-    bgColor: "bg-green-500/10"
+    color: "text-yellow-700",
+    bgColor: "bg-yellow-700/20"
 }
 ]
 
@@ -50,7 +50,7 @@ const DashboardPage = () => {
     <div>
         <div className="mb-8 space-y-4">
           <h2 className="text-2xl md:text-4xl font-bold
-          text-center">
+          text-center text-white">
             Explore the power of AI
           </h2>
           <p className="text-muted-foreground font-light
@@ -71,11 +71,11 @@ const DashboardPage = () => {
                 <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
                   <tool.icon className={cn("w-8 h-8", tool.color)} />
                 </div>
-                <div className="font-semibold">
+                <div className="font-semibold text-white">
                   {tool.label}
                 </div>
               </div>
-              <ArrowRight className="w-5 h-5"/>
+              <ArrowRight className="w-5 h-5 text-white"/>
             </Card>
           ))}
         </div>

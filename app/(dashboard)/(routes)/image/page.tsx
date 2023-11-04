@@ -19,10 +19,12 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardFooter } from "@/components/ui/card";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 const ImagePage = () => {
-    const router = useRouter();
-    const [images, setImages] = useState<string[]>([]);
+    const proModal = useProModal()
+    const router = useRouter()
+    const [images, setImages] = useState<string[]>([])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,8 +47,9 @@ const ImagePage = () => {
             setImages(urls)
             form.reset()
         } catch (error: any) {
-            //TODO: Open Pro Modal
-            console.log(error)
+            if(error?.response?.status === 403){
+                proModal.onOpen()
+            }
         } finally {
             router.refresh()
         }
@@ -66,7 +69,7 @@ const ImagePage = () => {
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="rounded-lg border w-full p-4
+                            className="text-white rounded-lg border w-full p-4
                             px-3 md:px-6 focus-within: shadow-sm
                             grid grid-cols-12 gap-2"
                         >
@@ -148,7 +151,8 @@ const ImagePage = () => {
                                 )}
                             />
                             <Button className="col-span-12 lg:col-span-2 w-full"
-                            disabled={isLoading}>
+                            disabled={isLoading}
+                            >
                                 Generate
                             </Button>
                         </form>
@@ -182,7 +186,7 @@ const ImagePage = () => {
                                 <CardFooter className="p-2">
                                     <Button 
                                         onClick={() => window.open(src)}
-                                        variant="secondary"
+                                        variant="default"
                                         className="w-full"
                                     >
                                         <Download className="h-4 w-4 mr-2"/>

@@ -3,7 +3,7 @@
 import * as z from "zod";
 import axios from "axios";
 import { Heading } from "@/components/heading"
-import { MessageSquare } from "lucide-react";
+import { VideoIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants"
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,15 +15,12 @@ import OpenAI from 'openai';
 import { useState } from "react";
 import { Empty } from "@/components/empty";
 import { Loader } from "@/components/loader";
-import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
 
-const CoversationPage = () => {
+const VideoPage = () => {
     const proModal = useProModal()
     const router = useRouter()
-    const [messages, setMessages] = useState<OpenAI.Chat.Completions.ChatCompletionMessageParam[]>([]);
+    const [video, setVideo] = useState<string>()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -36,18 +33,11 @@ const CoversationPage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try{
-            const userMessage: OpenAI.Chat.Completions.ChatCompletionMessageParam =
-            {
-              role: 'user',
-              content: values.prompt,
-            }
-            const newMessages = [...messages, userMessage]
+            setVideo(undefined)
 
-            const response = await axios.post("/api/conversation", {
-                messages: newMessages
-            })
+            const response = await axios.post("/api/video")
 
-            setMessages((current) => [...current, userMessage, response.data])
+            setVideo(response.data[0])
 
             form.reset()
         } catch (error: any) {
@@ -62,18 +52,18 @@ const CoversationPage = () => {
     return (
         <div>
             <Heading 
-                title="Conversation"
-                description="Our most advanced conversation model."
-                icon={MessageSquare}
-                iconColor="text-violet-500"
-                bgColor="bg-violet-500/10"
+                title="Video Generation"
+                description="Generate any kind of videos with your custom prompts!"
+                icon={ VideoIcon }
+                iconColor="text-orange-700"
+                bgColor="bg-orange-700/10"
             />
             <div className="px-4 lg:px-8">
                 <div>
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}
-                            className="rounded-lg border w-full p-4
+                            className="text-white rounded-lg border w-full p-4
                             px-3 md:px-6 focus-within: shadow-sm
                             grid grid-cols-12 gap-2"
                         >
@@ -84,10 +74,10 @@ const CoversationPage = () => {
                                     lg:col-span-10">
                                         <FormControl className="m-0 p-0">
                                             <Input
-                                                className="text-white border-0 outline-none
+                                                className="border-0 outline-none
                                                 focus-visible:ring-0 focus-visible:ring-transparent"
                                                 disabled={isLoading}
-                                                placeholder="How much water does an average male need to drink in the summer?"
+                                                placeholder="Cat dancing on a tree"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -108,31 +98,21 @@ const CoversationPage = () => {
                             <Loader />
                         </div>
                     )}
-                    {messages.length === 0 && !isLoading && (
+                    {!video && !isLoading && (
                         <div>
-                            <Empty label="No converstation started."/>
+                            <Empty label="No video generated."/>
                         </div>
                     )}
-                    <div className="flex flex-col-reverse gap-y-4">
-                        {messages.map((message) => (
-                            <div 
-                                key={message.content}
-                                className={cn(
-                                    "text-white p-8 w-full flex items-start gap-x-8 rounded-lg",
-                                    message.role === "user" ? "bg-[#595959] border border-black/10" : "bg-[#595959]"
-                                    )}
-                            >
-                                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                                <p className="text-sm">
-                                    {message.content}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
+                    {video && (
+                        <video className="text-white w-full aspect-video mt-8 rounded-lg
+                        border bg-black" controls>
+                            <source src={video} />
+                        </video>
+                    )}
                 </div>
             </div>
         </div>
     )
 }
 
-export default CoversationPage;
+export default VideoPage;
