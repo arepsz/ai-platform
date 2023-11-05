@@ -22,11 +22,6 @@ export const Empty = ({
             <p className="text-muted-foreground text-sm text-center">
                 {label}
             </p>
-            <div className="flex justify-end">
-                <footer className="sticky top-[100vh] text-yellow-500/20">
-                    <a target="_blank" href='https://pngtree.com/freepng/social-media-concept-in-3d-isometric-outline-design-woman-browses-on-laptop-creates-profile-watches-video-content-likes-and-shares-posts-line-web-template-vector-illustration-with-people-scene_7601730.html'>png image from pngtree.com/</a>
-                </footer>
-            </div>
         </>
     )
 }
