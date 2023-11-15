@@ -97,7 +97,7 @@ const ImagePage = () => {
                                 name="amount"
                                 control={form.control}
                                 render={({ field }) => (
-                                    <FormItem className="col-span12 lg:col-span-2">
+                                    <FormItem className="col-span-12 lg:col-span-2">
                                         <Select
                                             disabled={isLoading}
                                             onValueChange={field.onChange}
@@ -127,7 +127,7 @@ const ImagePage = () => {
                                 name="resolution"
                                 control={form.control}
                                 render={({ field }) => (
-                                    <FormItem className="col-span12 lg:col-span-2">
+                                    <FormItem className="col-span-12 lg:col-span-2">
                                         <Select
                                             disabled={isLoading}
                                             onValueChange={field.onChange}

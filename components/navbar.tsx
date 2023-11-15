@@ -2,6 +2,7 @@ import { UserButton } from "@clerk/nextjs";
 import MobileSidebar from "./mobile-sidebar";
 import { getApiLimitCount } from "@/lib/api-limit";
 import { checkSubscription } from "@/lib/subscription";
+import { useUser } from '@clerk/nextjs';
 
 const Navbar = async () => {
     const apiLimitCount = await getApiLimitCount()
